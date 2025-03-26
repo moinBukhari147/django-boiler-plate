@@ -1,5 +1,7 @@
 # from rest_framework.response import Response
 from utils.response import success_created
+from utils.response import ServerError
+from rest_framework import serializers
 from rest_framework import status
 from django.conf import settings
 
@@ -23,14 +25,14 @@ def send_phone_message(message, number):
 def send_otp(serialize):
     try:
         otp = serialize.validated_data.get('otp')
+        data = serialize.data
         user_num = "+92"+str(serialize.validated_data.get('phone_number'))
         message = "Your otp verfication code is \n" + str(otp)
         res = send_phone_message(number=user_num, message=message)
-        Status = "OTP send."
+        data['otp_status'] = "OTP send."
         if res["messages"][0]["status"] != "0":
-            Status = "OTP does not send."
-        data = serialize.data
-        data['OTP status']= Status
-        return success_created(message="OTP send successfully.", data=data)
+            data['otp_status'] = "OTP does not send."
+        return data
     except Exception as e:
-        Status = "Exception is raised while sending the OTP."
+        raise ServerError({"message": str(e)})
+

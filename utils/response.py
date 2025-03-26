@@ -12,7 +12,7 @@ class PaymentRequiredError(APIException):
     status_code = status.HTTP_402_PAYMENT_REQUIRED
     default_detail = 'Purchase a reqeust or request pack to send or receive request.'
     default_code = 'user'
-    def __init__(self, detail, code=default_code):
+    def __init__(self, detail=default_detail, code=default_code):
         # Wrap messages in ErrorDetail
         if isinstance(detail, dict):
             for key in detail:
@@ -27,7 +27,7 @@ class ConflictError(APIException):
     status_code = status.HTTP_409_CONFLICT
     default_detail = 'The request already processed.'
     default_code = 'user'
-    def __init__(self, detail, code=default_code):
+    def __init__(self, detail=default_detail, code=default_code):
         # Wrap messages in ErrorDetail
         if isinstance(detail, dict):
             for key in detail:
@@ -42,7 +42,7 @@ class TooManyRequests(APIException):
     status_code = status.HTTP_429_TOO_MANY_REQUESTS
     default_detail = "Too many requests. Please wait before trying again."
     default_code = 'user'
-    def __init__(self, detail, code=default_code):
+    def __init__(self, detail=default_detail, code=default_code):
         # Wrap messages in ErrorDetail
         if isinstance(detail, dict):
             for key in detail:
@@ -57,7 +57,21 @@ class NotFound(APIException):
     status_code = status.HTTP_404_NOT_FOUND
     default_detail = 'Resource not found.'
     default_code = 'not_found'
-    def __init__(self, detail, code=default_code):
+    def __init__(self, detail=default_detail, code=default_code):
+        # Wrap messages in ErrorDetail
+        if isinstance(detail, dict):
+            for key in detail:
+                detail[key] = [ErrorDetail(detail[key], code)]
+        self.detail = detail
+        self.code = code
+        super().__init__(detail=detail, code=code)
+# ==============================================================
+
+class Forbidden(APIException):
+    status_code = status.HTTP_404_NOT_FOUND
+    default_detail = 'Operation not allowed.'
+    default_code = 'forbidden'
+    def __init__(self, detail=default_detail, code=default_code):
         # Wrap messages in ErrorDetail
         if isinstance(detail, dict):
             for key in detail:
@@ -73,7 +87,7 @@ class ServerError(APIException):
     status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
     default_detail = 'Internal server error.'
     default_code = 'backend'
-    def __init__(self, detail, code=default_code):
+    def __init__(self, detail=default_detail, code=default_code):
         # Wrap messages in ErrorDetail
         if isinstance(detail, dict):
             for key in detail:

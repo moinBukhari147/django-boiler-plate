@@ -4,6 +4,9 @@ from rest_framework.exceptions import ErrorDetail
 def custom_exception_handler(exc, context):
     response = exception_handler(exc, context)
     if response is not None:
+        if response.data.get("detail"):
+            response.data["message"] = response.data['detail']
+            response.data.pop("detail")
         custom_response = {
             'success': False,
             'status_code': response.status_code,

@@ -3,6 +3,7 @@ import environ
 import os
 
 from pathlib import Path
+from datetime import timedelta
 
 ######################################################
 # Initialize environ
@@ -160,4 +161,13 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'EXCEPTION_HANDLER': 'utils.exception.custom_exception_handler',
+}
+
+# ---------------------------------------------------------------------
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes = 30),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "USER_ID_FIELD": "uuid",
+    "USER_ID_CLAIM": "user_uuid",
 }

@@ -18,6 +18,7 @@ from utils import models_choices as m_choices
 # This is custom user model, which is used to create user with phone number as username
 # Update the fields as per the requirement
 class User(AbstractUser):
+    id = None
     uuid = models.UUIDField(_("uuid"),default=uuid.uuid4, primary_key=True)
     phone_number = models.BigIntegerField(_("phone number"),
         validators=[MinValueValidator(3000000000), MaxValueValidator(3999999999)],
