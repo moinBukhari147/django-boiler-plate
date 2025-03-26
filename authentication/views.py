@@ -140,7 +140,6 @@ class UserViewSet(ModelViewSet):
             send_otp(serializer)
             return success_ok("Otp send to your number, veirfy opt and reset password.")
         except Exception as e:
-            print(e)
             raise e if isinstance(e, APIException) else ServerError({"message": str(e)})
 
 # -----------------------------------------------------------

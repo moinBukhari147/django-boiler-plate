@@ -1,0 +1,3 @@
+DEBUG=True
+SECRET_KEY=your-secret-key
+DATABASE_URL=postgres://postgres:M0in%40postgres@localhost:5432/testdb
